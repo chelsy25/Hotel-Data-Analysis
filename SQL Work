@@ -1,0 +1,23 @@
+Use Project;
+
+-- TO JOIN ALL THE TABLES
+create table hotels as (
+(select * from eighteen)
+union
+(select * from ninteen)
+union
+(select * from twenty));
+
+--TO GET REVENUE(TOTAL NIGHT STAYS*ADR) AS PER YEARS AND HOTELS
+select 
+arrival_date_year, hotel,
+round(sum((stays_in_week_nights+stays_in_weekend_nights)*adr),2) as revenue
+from hotels
+group by arrival_date_year,hotel;
+
+--TO JOIN LEFTOUT TABLES ON THE BASIS OF SIMILAR COLUMN
+select * from hotels
+left join project.market_segment
+on hotels.market_segment=market_segment.market_segment
+left join project.meal_cost
+on meal_cost.meal=hotels.meal;
